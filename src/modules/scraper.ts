@@ -1,5 +1,5 @@
-import puppeteer from 'puppeteer'
-import randomUseragent from 'random-useragent'
+import * as puppeteer from 'puppeteer'
+import { takeScreenshot } from '../helpers/scrapingUtils.js'
 
 export const handleScrapping = async () => {
   try {
@@ -9,9 +9,12 @@ export const handleScrapping = async () => {
     })
 
     const page = await browser.newPage()
-    const userAgent = randomUseragent.getRandom()
-    await page.setUserAgent(userAgent)
     await page.setViewport({ width: 1920, height: 1080 })
+
+    await page.goto('http://quotes.toscrape.com')
+
+    await takeScreenshot(page, './data/screens/example.png')
+    await browser.close()
   } catch (err) {
     console.log(err)
   }
